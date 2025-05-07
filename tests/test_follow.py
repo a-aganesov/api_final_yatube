@@ -109,6 +109,7 @@ class TestFollowAPI:
                     f' В процессе выполнения запроса произошла ошибка: {error}'
                 )
             )
+        print(response.status_code, response.data)
         assert response.status_code == HTTPStatus.CREATED, assert_msg
         test_data = response.json()
 

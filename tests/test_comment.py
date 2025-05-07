@@ -151,6 +151,7 @@ class TestCommentAPI:
                 data=data
             )
         except IntegrityError as error:
+            print(response.status_code, response.data)
             raise AssertionError(
                 assert_msg + (
                     f' В процессе выполнения запроса произошла ошибка: {error}'
