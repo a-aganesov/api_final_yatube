@@ -6,9 +6,9 @@ User = get_user_model()
 
 class Group(models.Model):
 
-    title = models.CharField(max_length=50)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
+    title = models.CharField(max_length=50, verbose_name="Заголовок")
+    slug = models.SlugField(unique=True, verbose_name="slug")
+    description = models.TextField(verbose_name="Описание")
 
     class Meta:
         verbose_name_plural = "Группы"
@@ -33,15 +33,11 @@ class Follow(models.Model):
     )
 
     class Meta:
-        constraints = [
+        constraints = (
             models.UniqueConstraint(
-                fields=["following", "user"], name="unique_following"
+                fields=("following", "user"), name="unique_following"
             ),
-            models.CheckConstraint(
-                check=~models.Q(user=models.F('following')),
-                name="prevent_self_follow",
-            ),
-        ]
+        )
 
 
 class Post(models.Model):
@@ -88,3 +84,11 @@ class Comment(models.Model):
     created = models.DateTimeField(
         "Дата добавления", auto_now_add=True, db_index=True
     )
+
+    class Meta:
+        verbose_name = "Коментарий"
+        verbose_name_plural = "Коментарии"
+        ordering = ("id",)
+
+    def __str__(self):
+        return self.text
